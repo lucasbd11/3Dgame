@@ -119,7 +119,6 @@ class matrix:
         matr_lines_selected = self.matr[key[0]]
         
 
-        
         for i in range(len(other.matr)):
             matr_lines_selected[i][key[1]] = other.matr[i]
         
@@ -131,17 +130,33 @@ class matrix:
         
         self.matr = matr_bis
     
+    def flat(self):
+        list_elements = []
+        for y in self.matr:
+            for x in y:
+                list_elements += [x]
+        return list_elements
     
     def echelon_reduce(self):
         
-        for y in range(self.dim[0]):
-            
+        for x in range(self.dim[0]):
+            y = x
 
-            self[y,y:] = self[y,y:]/self[y,y].matr[0][0]
+            pivot = self[y,x]
             
-            for y_bis in range(y+1,self.dim[0]):
-                self[y_bis,:] = self[y_bis,:]-self[y_bis,y].matr[0][0]*self[y,:]
-        
+            while pivot.matr[0][0] == 0 and y < self.dim[0]-1:
+                y += 1
+                
+                pivot = self[y,x]
+            if pivot.matr[0][0] != 0:
+                self[y,x:] = self[y,x:]/self[y,x].matr[0][0]
+                
+                self[x,:],self[y,:] = self[y,:],self[x,:]
+                
+                for y_bis in range(x+1,self.dim[0]):
+                    self[y_bis,:] = self[y_bis,:]-self[y_bis,x].matr[0][0]*self[x,:]
+                
         for x in range(self.dim[0]-1,-1,-1):
             for y in range(x-1,-1,-1):
                 self[y,:] = self[y,:]-self[y,x].matr[0][0]*self[x,:]
+            
