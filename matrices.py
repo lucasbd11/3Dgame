@@ -139,24 +139,40 @@ class matrix:
     
     def echelon_reduce(self):
         
+        pivot_rank = 0
+        
         for x in range(self.dim[0]):
-            y = x
+            y = pivot_rank
 
             pivot = self[y,x]
+            
             
             while pivot.matr[0][0] == 0 and y < self.dim[0]-1:
                 y += 1
                 
                 pivot = self[y,x]
+            
+            
+            
             if pivot.matr[0][0] != 0:
+                
+                
+                
                 self[y,x:] = self[y,x:]/self[y,x].matr[0][0]
                 
-                self[x,:],self[y,:] = self[y,:],self[x,:]
+                self[pivot_rank,:],self[y,:] = self[y,:],self[pivot_rank,:]
                 
                 for y_bis in range(x+1,self.dim[0]):
                     self[y_bis,:] = self[y_bis,:]-self[y_bis,x].matr[0][0]*self[x,:]
                 
+                pivot_rank += 1
+        
         for x in range(self.dim[0]-1,-1,-1):
-            for y in range(x-1,-1,-1):
-                self[y,:] = self[y,:]-self[y,x].matr[0][0]*self[x,:]
-            
+            y_pivot = 0
+            flat_column = self[:,x].flat()
+            for y in range(len(flat_column)):
+                if flat_column[y] != 0:
+                    y_pivot = y
+            if self[y_pivot,:x].flat().count(0) == len(self[y_pivot,:x].flat()):
+                for y in range(y_pivot-1,-1,-1):
+                    self[y,:] = self[y,:]-self[y,x].matr[0][0]*self[y_pivot,:]
