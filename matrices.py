@@ -13,11 +13,28 @@ class matrix:
         
         str_repr = "|"
         
-        for y in self.matr:
-            for x in y:
-                str_repr += str(x) + "\t"
+        for y in range(self.dim[0]):
+            
+            for x in range(self.dim[1]):
+                
+                flat_matr = self[:,x].flat()
+                longest_str = len(str(flat_matr[0]))
+                
+                for i in flat_matr[1:]:
+                    if len(str(i)) > longest_str:
+                        longest_str = len(str(flat_matr[i]))
+                
+                longest_str += 1
+
+                str_repr += str(self[y,x].matr[0][0]) + " "*(longest_str-(len(str(self[y,x].matr[0][0]))))
+            
+            
             str_repr += "|\n|"
+        
         return str_repr[:-1]
+    
+    
+    
     
     def __getitem__(self,key):
         
@@ -156,8 +173,6 @@ class matrix:
             
             if pivot.matr[0][0] != 0:
                 
-                
-                
                 self[y,x:] = self[y,x:]/self[y,x].matr[0][0]
                 
                 self[pivot_rank,:],self[y,:] = self[y,:],self[pivot_rank,:]
@@ -176,3 +191,6 @@ class matrix:
             if self[y_pivot,:x].flat().count(0) == len(self[y_pivot,:x].flat()):
                 for y in range(y_pivot-1,-1,-1):
                     self[y,:] = self[y,:]-self[y,x].matr[0][0]*self[y_pivot,:]
+                
+                
+                
