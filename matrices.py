@@ -22,7 +22,7 @@ class matrix:
                 
                 for i in flat_matr[1:]:
                     if len(str(i)) > longest_str:
-                        longest_str = len(str(flat_matr[i]))
+                        longest_str = len(str(i))
                 
                 longest_str += 1
 
@@ -157,19 +157,22 @@ class matrix:
     def echelon_reduce(self):
         
         pivot_rank = 0
+        x = 0
+
         
-        for x in range(self.dim[0]):
+        while pivot_rank < self.dim[0] and x < self.dim[1]:
             y = pivot_rank
 
             pivot = self[y,x]
             
+
             
             while pivot.matr[0][0] == 0 and y < self.dim[0]-1:
                 y += 1
                 
                 pivot = self[y,x]
             
-            
+            print(y,x,pivot)
             
             if pivot.matr[0][0] != 0:
                 
@@ -177,11 +180,14 @@ class matrix:
                 
                 self[pivot_rank,:],self[y,:] = self[y,:],self[pivot_rank,:]
                 
-                for y_bis in range(x+1,self.dim[0]):
-                    self[y_bis,:] = self[y_bis,:]-self[y_bis,x].matr[0][0]*self[x,:]
+                for y_bis in range(pivot_rank+1,self.dim[0]):
+
+                    self[y_bis,:] = self[y_bis,:]-self[y_bis,x].matr[0][0]*self[pivot_rank,:]
                 
                 pivot_rank += 1
+            x += 1
         
+
         for x in range(self.dim[0]-1,-1,-1):
             y_pivot = 0
             flat_column = self[:,x].flat()
@@ -191,6 +197,4 @@ class matrix:
             if self[y_pivot,:x].flat().count(0) == len(self[y_pivot,:x].flat()):
                 for y in range(y_pivot-1,-1,-1):
                     self[y,:] = self[y,:]-self[y,x].matr[0][0]*self[y_pivot,:]
-                
-                
                 
