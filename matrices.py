@@ -1,3 +1,9 @@
+
+###A retirer
+import sys, os
+sys.path.append('/Users/Lucas/Desktop/Dev/minecraft')
+###
+
 import copy
 
 class matrix:
@@ -171,9 +177,7 @@ class matrix:
                 y += 1
                 
                 pivot = self[y,x]
-            
-            print(y,x,pivot)
-            
+               
             if pivot.matr[0][0] != 0:
                 
                 self[y,x:] = self[y,x:]/self[y,x].matr[0][0]
@@ -197,4 +201,3 @@ class matrix:
             if self[y_pivot,:x].flat().count(0) == len(self[y_pivot,:x].flat()):
                 for y in range(y_pivot-1,-1,-1):
                     self[y,:] = self[y,:]-self[y,x].matr[0][0]*self[y_pivot,:]
-                
